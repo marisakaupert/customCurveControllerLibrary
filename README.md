@@ -1,5 +1,5 @@
 ```python
-# if you need to add a aath
+# if you need to add a path
 import sys 
 sys.path.append( 'someFilePath' )
 
