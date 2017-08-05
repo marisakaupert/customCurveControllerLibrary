@@ -6,7 +6,7 @@ from PIL import Image
 """ 
 import iconConvert
 reload(iconConvert)
-startImage = r'C:\Users\Marisa\Documents\cgCircuit\screenCaptures\oval.png'
+startImage = r'Insert path here, Ex: r'C:\Users\Marisa\Documents\cgCircuit\screenCaptures\oval.png'
 resultImage = startImage.replace('.png','.jpeg')
 iconConvert.processScreenCapture(startImage, resultImage)
 
@@ -25,8 +25,6 @@ args = parser.parse_args()
 
 def processScreenCapture(imagePath=None,imageResultPath=None):
 
-	#testImage = r'C:\Users\Marisa\Documents\cgCircuit\screenCaptures\oval.png'
-
 	im = Image.open(imagePath)
 	width, height = im.size
 
@@ -39,7 +37,6 @@ def processScreenCapture(imagePath=None,imageResultPath=None):
 
 	croppedImg = im.crop((left,top,right,bottom))
 	croppedImg.save(imageResultPath)
-
 
 
 

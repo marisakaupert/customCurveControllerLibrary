@@ -10,16 +10,16 @@ import maya.OpenMayaUI as omui
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.DEBUG)
 
-import conGen_v0011 as conGenAPI
+import conGen as conGenAPI
 reload(conGenAPI)
 
 """
 to add a new path:
 import sys 
-sys.path.append( 'C:\Users\Marisa\Documents/cgCircuit' )
+sys.path.append( 'palce path here', Ex: 'C:\Users\Marisa\Documents/cgCircuit' )
 
 
-import controllerLibUI_v0011 as conLibUI
+import controllerLibUI as conLibUI
 reload(conLibUI)
 conLibUI.run()
 
@@ -44,9 +44,6 @@ def run():
 
 
 class CurveControllerLibraryUI(QtGui.QDialog):
-
-    # path to the .ui file but you don't need it anymore!
-    #uiFilePath = os.path.join(os.path.dirname(__file__), 'geomGenerator_v001.ui')    
 
     def __init__(self,parent=None):
         super(CurveControllerLibraryUI,self).__init__(parent)
@@ -103,11 +100,10 @@ class CurveControllerLibraryUI(QtGui.QDialog):
         self.verticalLayout.addWidget(self.conLabel)
 
 
-
         # conName
         self.conNameLineEdit = QtGui.QLineEdit()
 
-        rx = QtCore.QRegExp("[0-9a-z_]*")
+        rx = QtCore.QRegExp("[0-9a-zA-Z_]*")
         validator = QtGui.QRegExpValidator(rx, self)
 
         self.conNameLineEdit.setValidator(validator)
@@ -128,7 +124,7 @@ class CurveControllerLibraryUI(QtGui.QDialog):
         self.verticalLayout.addWidget(self.imageLabel)
         self.imageLabel.setAlignment(QtCore.Qt.AlignCenter)
 
-        # color labe
+        # color label
         self.colorLabel = QtGui.QLabel('Select Controller Color:')
         self.verticalLayout.addWidget(self.colorLabel)
 
@@ -195,8 +191,6 @@ class CurveControllerLibraryUI(QtGui.QDialog):
 
         self.gridLayout.addLayout(self.verticalLayout, 1, 0, 1, 1)
 
-
-        # MANY THINGS YOU HAVE TO ADD
         self.makeConnections()
         self.setWindowTitle("CONTROLLER LIBRARY")
         self.setLayout(self.gridLayout)
@@ -211,7 +205,7 @@ class CurveControllerLibraryUI(QtGui.QDialog):
 
 
     def makeConnections(self):
-        """ connect events in our UI """
+        """ connect events in UI """
         self.conListWidget.itemDoubleClicked.connect(self.doubleClickedItem)
         self.conListWidget.itemClicked.connect(self.singleClickedItem)
         self.scaleSlider.valueChanged[int].connect(self.sliderEvent)
@@ -221,12 +215,12 @@ class CurveControllerLibraryUI(QtGui.QDialog):
 
 
     def updateListWidget(self):
-        """ updates the lsit widget
+        """ updates the list widget
         """
         # returns sorted list
         conList = conGenAPI.consList()
 
-        # empything the lsit widget
+        # emptying the list widget
         self.conListWidget.clear()
 
         for con in conList:
@@ -254,7 +248,7 @@ class CurveControllerLibraryUI(QtGui.QDialog):
 
 
     def sliderEvent(self,value):
-        """
+        """ sets the value of the slider
         """
         floatVal = float(value)/10.0
         self.scaleValLineEdit.setText(str(floatVal))
@@ -307,10 +301,10 @@ class CurveControllerLibraryUI(QtGui.QDialog):
             _logger.error("No valid name entered")
 
 
-        # SAVE THE CURVE
+        # save the curve
         conGenAPI.saveCon(con=sel[0], conName = curveName, doScreenGrab=True, debug =True)
 
-        # UPDATE THE LIST
+        # update the list
         self.updateListWidget()
 
 
@@ -326,8 +320,6 @@ class CurveControllerLibraryUI(QtGui.QDialog):
         curItemText = curItem.text() 
 
         print("item clicked: {0}".format(curItemText))
-
-
 
         picturePath = os.path.join(conGenAPI.iconFolderPath, '{0}.jpg'.format(curItemText))
 

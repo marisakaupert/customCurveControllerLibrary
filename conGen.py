@@ -13,12 +13,12 @@ except:
 	import pickle
 
 
-#path to our default pickle file
+# path to default pickle file
 defaultLibraryPath = os.path.join(os.path.dirname(__file__), 'consPickle.pkl')
 iconFolderPath = os.path.join(os.path.dirname(__file__), 'screenCaptures')
 iconsConvertPath = os.path.join(os.path.dirname(__file__),'iconConvert.py')
 
-#if exists, need to reload it everythime
+# if exists, need to reload it everytime
 try:
 	consDictionary = pickle.load(open(defaultLibraryPath, 'rb'))
 	tempDictionaryString = json.dumps(consDictionary,indent = 4)
@@ -44,20 +44,15 @@ def saveCon(con=None, conName = None, doScreenGrab=False, doCrop = True,debug = 
 	conShape = con.getShape()
 
 	degree = conShape.degree() # 1 or 3
-	form = conShape.form().key #periodic or open
+	form = conShape.form().key # periodic or open
 	spans = conShape.spans.get() # number of CVS, same as number of CVs
-	knots = conShape.getKnots() #list of float values
-	cvs = conShape.getCVs() #list of CV points
-
-
-	_logger.debug("print knots: {0}".format(knots))
+	knots = conShape.getKnots() # list of float values
+	cvs = conShape.getCVs() # list of CV points
 
 	conName = conName or pm.promptBox("Provide Controller Name", "Name: " , "Ok" , "Cancel")
 
 	if not conName:
 		return
-	_logger.debug("conName: {0}".format(conName))
-
 
 	tempDictionary = {}
 
@@ -66,24 +61,17 @@ def saveCon(con=None, conName = None, doScreenGrab=False, doCrop = True,debug = 
 	tempDictionary['form'] = form
 	tempDictionary['spans'] = spans
 
-	# convert vert to tuples so json will not choke on the date
+	# convert verts to tuples so json will not choke on the date
 	tempDictionary['cvs'] = [  tuple(cv)  for cv in cvs ]
-
-
-	#tempDictionaryString = json.dumps(tempDictionary,indent = 4)
-	#_logger.debug("tempDict: {0}".format(tempDictionaryString))
 
 	# appending to main dictionary
 	consDictionary[conName] = tempDictionary
 
 	tempDictionaryString = json.dumps(consDictionary,indent = 4)
-	_logger.debug("consDict: {0}".format(tempDictionaryString))
 
 	# export to pickle
 	pickle.dump(consDictionary, open(defaultLibraryPath, 'wb'))
 
-
-	# debug 
 	if debug:
 		with open(defaultLibraryPath.replace(".pkl",".json"), 'w') as outfile:
 			json.dump(consDictionary,outfile,indent=4)
@@ -115,14 +103,9 @@ def cropImage(conName):
 	res,err = p.communicate()
 
 
-	_logger.debug("res: {0}".format(res))
-	_logger.debug("err: {0}".format(err))
-
-
-
 
 def screenGrab(conName):
-	""" capture the 3d viewport as an Icon Pic
+	""" captures the 3d viewport as an Icon Picture
 	"""
 
 	import maya.OpenMaya as api
@@ -136,15 +119,11 @@ def screenGrab(conName):
 
 	view.readColorBuffer(img,True)
 
-	#testImage = r'C:\Users\Marisa\Documents/cgCircuit/testImage.png'
 	iconFileName = os.path.join(iconFolderPath,"{0}.png".format(conName))
-
 
 	# write to disk
 	img.writeToFile(iconFileName, 'png')
 
-
-	
 
 def generateCon(conName = None,scale=1.0,color=6):
 	""" generate a nurbs curve controller
@@ -155,14 +134,13 @@ def generateCon(conName = None,scale=1.0,color=6):
 		return
 
 	conToCreate = consDictionary.get(conName, None)
-
+gulp
 	if not conToCreate:
 		_logger.error("Control does not exist in the pickle file")
 		return
 
 
 	tempDictionaryString = json.dumps(conToCreate,indent = 4)
-	_logger.debug("conToCreate: {0}".format(tempDictionaryString))
 
 
 	periodic = True  if conToCreate.get('form') == 'periodic' else False 
