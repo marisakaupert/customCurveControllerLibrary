@@ -16,7 +16,7 @@ reload(conGenAPI)
 """
 to add a new path:
 import sys 
-sys.path.append( 'palce path here', Ex: 'C:\Users\Marisa\Documents/cgCircuit' )
+sys.path.append( 'palce path here', Ex: 'C:\Users\yourName\Documents/folderName' )
 
 
 import controllerLibUI as conLibUI
@@ -26,16 +26,20 @@ conLibUI.run()
 """
 
 def getMayaWindow():
-    """ pointer to the maya main window  
+    """ Pointer to the Maya main window  
     """
+
     ptr = omui.MQtUtil.mainWindow()
     if ptr :
         return wrapInstance(long(ptr), QtGui.QMainWindow)
 
 win = None
+
+
 def run():
-    """  builds our UI
+    """  Builds our UI
     """
+
     global win
     if win:
         win.close()
@@ -52,7 +56,7 @@ class CurveControllerLibraryUI(QtGui.QDialog):
         self.scaleValue = 1.0
 
 
-        #index color mapping to rgb for Q pix map
+        # index color mapping to rgb for Q pix map
         self.colorMapDictionary = {
         0:None,
         1:(0,0,0),
@@ -113,8 +117,6 @@ class CurveControllerLibraryUI(QtGui.QDialog):
         self.saveConbutton = QtGui.QPushButton('Save Controller')
         self.verticalLayout.addWidget(self.saveConbutton)
 
-        # =================================================================
-
         self.defaultIconImage = os.path.join(conGenAPI.iconFolderPath, 'noIcon.png')
         thePixmap = QtGui.QPixmap(self.defaultIconImage)
         defaultIconScaled = thePixmap.scaledToWidth(400)
@@ -128,14 +130,13 @@ class CurveControllerLibraryUI(QtGui.QDialog):
         self.colorLabel = QtGui.QLabel('Select Controller Color:')
         self.verticalLayout.addWidget(self.colorLabel)
 
-        # color
+        # colors
         self.buttonGridLayout = QtGui.QGridLayout()
         self.buttonGridLayout.setHorizontalSpacing(0)
         self.buttonGridLayout.setVerticalSpacing(0)
         self.buttonGroup = QtGui.QButtonGroup()
 
 
-        # adding buttons to the grid
         buttonNumber = 0
         for i in range(4):
             for j in range(8):
@@ -198,14 +199,18 @@ class CurveControllerLibraryUI(QtGui.QDialog):
         self.show()
         
     def initUiState(self):
-        """ sets up the initial state of UI"""
+        """ Sets up the initial state of UI
+        """
+
         self.updateListWidget()
         self.scaleSlider.setValue(self.scaleValue)
 
 
 
     def makeConnections(self):
-        """ connect events in UI """
+        """ Connect events in UI 
+        """
+
         self.conListWidget.itemDoubleClicked.connect(self.doubleClickedItem)
         self.conListWidget.itemClicked.connect(self.singleClickedItem)
         self.scaleSlider.valueChanged[int].connect(self.sliderEvent)
@@ -215,8 +220,9 @@ class CurveControllerLibraryUI(QtGui.QDialog):
 
 
     def updateListWidget(self):
-        """ updates the list widget
+        """ Updates the list widget
         """
+
         # returns sorted list
         conList = conGenAPI.consList()
 
@@ -229,7 +235,7 @@ class CurveControllerLibraryUI(QtGui.QDialog):
 
 
     def doubleClickedItem(self):
-        """ for when an item is double clicked
+        """ When an item is double clicked
         """
 
         theListWidget = self.sender()
@@ -237,10 +243,9 @@ class CurveControllerLibraryUI(QtGui.QDialog):
         curItem = theListWidget.currentItem()
         curItemText = curItem.text() 
 
-        # GET COLOR
+        # get color
         currentButton = self.buttonGroup.checkedButton()
 
-        # ternary
         color = int(currentButton.text()) if currentButton else 0
 
 
@@ -248,8 +253,9 @@ class CurveControllerLibraryUI(QtGui.QDialog):
 
 
     def sliderEvent(self,value):
-        """ sets the value of the slider
+        """ Sets the value of the slider
         """
+
         floatVal = float(value)/10.0
         self.scaleValLineEdit.setText(str(floatVal))
         self.scaleValue = floatVal
@@ -258,7 +264,7 @@ class CurveControllerLibraryUI(QtGui.QDialog):
 
 
     def manualScaleEnteredEvent(self):
-        """ when a manual scale is entered update the slider and scaleValue
+        """ When a manual scale is entered update the slider and scaleValue
         """
         
         tempScale = float(self.scaleValLineEdit.text())
@@ -275,7 +281,7 @@ class CurveControllerLibraryUI(QtGui.QDialog):
 
 
     def saveControllerEvent(self):
-        """ saves selected curve
+        """ Saves selected curve
         """
 
         sel = pm.selected()
@@ -310,7 +316,7 @@ class CurveControllerLibraryUI(QtGui.QDialog):
 
 
     def singleClickedItem(self):
-        """ when an item is clicked in the list widget
+        """ When an item is clicked in the list widget
         """
 
 
@@ -318,8 +324,6 @@ class CurveControllerLibraryUI(QtGui.QDialog):
 
         curItem = theListWidget.currentItem()
         curItemText = curItem.text() 
-
-        print("item clicked: {0}".format(curItemText))
 
         picturePath = os.path.join(conGenAPI.iconFolderPath, '{0}.jpg'.format(curItemText))
 
