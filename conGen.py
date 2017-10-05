@@ -134,7 +134,7 @@ def generateCon(conName = None,scale=1.0,color=6):
 		return
 
 	conToCreate = consDictionary.get(conName, None)
-gulp
+
 	if not conToCreate:
 		_logger.error("Control does not exist in the pickle file")
 		return
