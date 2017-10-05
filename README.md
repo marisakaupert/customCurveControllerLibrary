@@ -11,7 +11,7 @@ import sys
 sys.path.append( 'C:\Users\yourName\Documents/folderName' )
 
 # otherwise, run this
-import controllerLibUI_v0011 as conLibUI
+import controllerLibUI as conLibUI
 reload(conLibUI)
 conLibUI.run()
 ```
