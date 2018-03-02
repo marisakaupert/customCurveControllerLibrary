@@ -10,7 +10,7 @@ import maya.OpenMayaUI as omui
 _logger = logging.getLogger(__name__)
 _logger.setLevel(logging.DEBUG)
 
-import conGen as conGenAPI
+import conGenSimplified as conGenAPI
 reload(conGenAPI)
 
 """
