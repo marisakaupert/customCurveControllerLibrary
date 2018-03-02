@@ -337,10 +337,3 @@ class CurveControllerLibraryUI(QtGui.QDialog):
         scaledPixmap = newPixmap.scaledToWidth(400)
 
         self.imageLabel.setPixmap(scaledPixmap)
-
-
-
-
-
-
-
