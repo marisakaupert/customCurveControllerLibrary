@@ -3,7 +3,7 @@ My Curve Controller Library is based off the PyMel UI made by Geordie Martinez t
 ## To use: ##
 * Download controllerLibUI.py and conGen.py
 * Put both files in your Maya scripts directory or add the folder with them to your python path
-* Put iconConvert.py in your **Python** directory
+* Put iconConvert.py in your **Python** directory (this is no longer needed in Maya 2018)
 * Type this into the Script Editor:
 ```python
 # to add path
