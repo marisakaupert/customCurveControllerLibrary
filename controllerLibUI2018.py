@@ -7,11 +7,11 @@ from shiboken2 import wrapInstance
 import pymel.core as pm
 import maya.OpenMayaUI as omui 
 
-_logger = logging.getLogger(__name__)
-_logger.setLevel(logging.DEBUG)
-
 import conGen as conGenAPI
 reload(conGenAPI)
+
+_logger = logging.getLogger(__name__)
+_logger.setLevel(logging.DEBUG)
 
 """
 to add a new path:
