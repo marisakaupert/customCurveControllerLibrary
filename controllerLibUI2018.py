@@ -32,7 +32,6 @@ def getMayaWindow():
 
 win = None
 
-
 def run():
     """  Builds our UI
     """
@@ -49,9 +48,7 @@ class CurveControllerLibraryUI(QtWidgets.QMainWindow):
     def __init__(self, parent=None):
         super(CurveControllerLibraryUI,self).__init__(parent)
 
-
         self.scaleValue = 1.0
-
 
         # index color mapping to rgb for Q pix map
         self.colorMapDictionary = {
@@ -93,14 +90,12 @@ class CurveControllerLibraryUI(QtWidgets.QMainWindow):
         self.setCentralWidget(QtWidgets.QWidget(self))        
         self.gridLayout = QtWidgets.QGridLayout()
         
-
         self.verticalLayout = QtWidgets.QVBoxLayout()
         self.verticalLayout.setContentsMargins(5, 5, 5, 5)
 
         # label
         self.conLabel = QtWidgets.QLabel('Simple Controller Library')
         self.verticalLayout.addWidget(self.conLabel)
-
 
         # conName
         self.conNameLineEdit = QtWidgets.QLineEdit()
@@ -134,7 +129,6 @@ class CurveControllerLibraryUI(QtWidgets.QMainWindow):
         self.buttonGridLayout.setVerticalSpacing(0)
         self.buttonGroup = QtWidgets.QButtonGroup()
 
-
         buttonNumber = 0
         for i in range(4):
             for j in range(8):
@@ -158,16 +152,17 @@ class CurveControllerLibraryUI(QtWidgets.QMainWindow):
                         textColor = 'white'
 
 
-                    self.colorButton.setStyleSheet('QPushButton {background-color: rgb(%d,%d,%d); color: %s;}' % (buttonColor[0],buttonColor[1],buttonColor[2], textColor))
+                    self.colorButton.setStyleSheet(
+                        'QPushButton {background-color: rgb(%d,%d,%d); color: %s;}' % (
+                            buttonColor[0],buttonColor[1],buttonColor[2], textColor))
 
                 self.buttonGroup.addButton(self.colorButton)
 
                 # adding buttons to the grid
-                self.buttonGridLayout.addWidget(self.colorButton, i,j)
+                self.buttonGridLayout.addWidget(self.colorButton, i, j)
 
                 buttonNumber += 1
 
-        
         self.verticalLayout.addLayout(self.buttonGridLayout)
 
         # slider chunk
@@ -203,8 +198,6 @@ class CurveControllerLibraryUI(QtWidgets.QMainWindow):
         self.updateListWidget()
         self.scaleSlider.setValue(self.scaleValue)
 
-
-
     def makeConnections(self):
         """ Connect events in UI 
         """
@@ -214,8 +207,6 @@ class CurveControllerLibraryUI(QtWidgets.QMainWindow):
         self.scaleSlider.valueChanged[int].connect(self.sliderEvent)
         self.scaleValLineEdit.editingFinished.connect(self.manualScaleEnteredEvent)
         self.saveConbutton.clicked.connect(self.saveControllerEvent)
-
-
 
     def updateListWidget(self):
         """ Updates the list widget
@@ -231,7 +222,6 @@ class CurveControllerLibraryUI(QtWidgets.QMainWindow):
             item = QtWidgets.QListWidgetItem(con)
             self.conListWidget.addItem(item)
 
-
     def doubleClickedItem(self):
         """ When an item is double clicked
         """
@@ -246,9 +236,7 @@ class CurveControllerLibraryUI(QtWidgets.QMainWindow):
 
         color = int(currentButton.text()) if currentButton else 0
 
-
-        conGenAPI.generateCon(conName=curItemText, scale = self.scaleValue, color=color)
-
+        conGenAPI.generateCon(conName=curItemText, scale=self.scaleValue, color=color)
 
     def sliderEvent(self,value):
         """ Sets the value of the slider
@@ -257,9 +245,6 @@ class CurveControllerLibraryUI(QtWidgets.QMainWindow):
         floatVal = float(value)/10.0
         self.scaleValLineEdit.setText(str(floatVal))
         self.scaleValue = floatVal
-
-
-
 
     def manualScaleEnteredEvent(self):
         """ When a manual scale is entered update the slider and scaleValue
@@ -275,8 +260,6 @@ class CurveControllerLibraryUI(QtWidgets.QMainWindow):
             self.scaleValue = tempScale
         
         self.scaleSlider.setValue(self.scaleValue * 10)
-
-
 
     def saveControllerEvent(self):
         """ Saves selected curve
@@ -299,24 +282,19 @@ class CurveControllerLibraryUI(QtWidgets.QMainWindow):
             _logger.debug("do you have something selected?")
 
 
-
         curveName = self.conNameLineEdit.text()
         if not curveName:
             _logger.error("No valid name entered")
 
-
         # save the curve
-        conGenAPI.saveCon(con=sel[0], conName = curveName, doScreenGrab=True, debug =True)
+        conGenAPI.saveCon(con=sel[0], conName=curveName, doScreenGrab=True, debug=True)
 
         # update the list
         self.updateListWidget()
 
-
-
     def singleClickedItem(self):
         """ When an item is clicked in the list widget
         """
-
 
         theListWidget = self.sender()
 
@@ -335,9 +313,3 @@ class CurveControllerLibraryUI(QtWidgets.QMainWindow):
         scaledPixmap = newPixmap.scaledToWidth(400)
 
         self.imageLabel.setPixmap(scaledPixmap)
-
-
-
-
-
-
