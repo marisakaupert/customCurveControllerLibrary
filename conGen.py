@@ -4,14 +4,13 @@ import json
 import logging
 import pymel.core as pm
 
-_logger = logging.getLogger(__name__)
-_logger.setLevel(logging.DEBUG)
-
 try:
 	import cPickle as pickle
 except:
 	import pickle
 
+_logger = logging.getLogger(__name__)
+_logger.setLevel(logging.DEBUG)
 
 # path to default pickle file
 defaultLibraryPath = os.path.join(os.path.dirname(__file__), 'consPickle.pkl')
@@ -30,13 +29,14 @@ except:
 def consList():
 	""" returns a list of available controllers
 	"""
+
 	return sorted(consDictionary.keys())
 
-
-def saveCon(con=None, conName = None, doScreenGrab=False, doCrop = True,debug = False):
+def saveCon(con=None, conName=None, doScreenGrab=False, doCrop=True, debug=False):
 	""" saves selected nurbs curve to te pickle file
 		con = short for controller
 	"""
+
 	global consDictionary
 
 	con = con or pm.selected()[0]
@@ -83,7 +83,6 @@ def saveCon(con=None, conName = None, doScreenGrab=False, doCrop = True,debug = 
 	if doCrop:
 		cropImage(conName)
 
-
 def cropImage(conName):
 	""" runs a subprocess to crop the image to 400x400
 	"""
@@ -93,16 +92,12 @@ def cropImage(conName):
 	imageStart = os.path.join(iconFolderPath,"{0}.png".format(conName))
 	imageResult = os.path.join(iconFolderPath,"{0}.jpg".format(conName))
 
-
 	cmd = ['python', iconsConvertPath, 
            '-ip', imageStart, 
            '-irp', imageResult]
 
-
 	p = subprocess.Popen(cmd,stdout=subprocess.PIPE, stderr=subprocess.PIPE, shell=True)
 	res,err = p.communicate()
-
-
 
 def screenGrab(conName):
 	""" captures the 3d viewport as an Icon Picture
@@ -124,7 +119,6 @@ def screenGrab(conName):
 	# write to disk
 	img.writeToFile(iconFileName, 'png')
 
-
 def generateCon(conName = None,scale=1.0,color=6):
 	""" generate a nurbs curve controller
 	"""
@@ -139,9 +133,7 @@ def generateCon(conName = None,scale=1.0,color=6):
 		_logger.error("Control does not exist in the pickle file")
 		return
 
-
 	tempDictionaryString = json.dumps(conToCreate,indent = 4)
-
 
 	periodic = True  if conToCreate.get('form') == 'periodic' else False 
 	degree = conToCreate.get('degree')
@@ -153,13 +145,8 @@ def generateCon(conName = None,scale=1.0,color=6):
 	crv.scale.set((scale,scale,scale))
 	pm.makeIdentity(crv,apply=True,t=0,r=0,s=1,n=0)
 
-
 	# set color
 	crv.getShape().overrideEnabled.set(1)
 	crv.getShape().overrideColor.set(color)
 
 	return crv
-
-
-
-
